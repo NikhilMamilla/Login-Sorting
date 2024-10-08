@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="t-center">Login</h2>
+        <form id="loginForm">
+            <div class="inputDiv">
+                <label for="name" class="username">Username</label>
+                <div class="userArea">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" name="name" id="name" placeholder="Type your username">
+                </div>
+                <div class="error-message" id="usernameError"></div>
+                <hr>
+            </div>
+            <div class="inputDiv">
+                <label for="password" class="username">Password</label>
+                <div class="userArea">
+                    <i class="fa-solid fa-key"></i>
+                    <input type="password" name="password" id="password" placeholder="Type your password">
+                    <i class="fa-solid fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+                </div>
+                <div class="error-message" id="passwordError"></div>
+                <hr>
+            </div>
+
+            <span class="forgotPassword">Forgot password?</span>
+            <button class="btn" type="submit">Login</button>
+            <div class="formBottom">
+                <p>Or Login using</p>
+                <ul class="flexUl">
+                    <a href="https://www.facebook.com/login/" target="_blank">
+                        <li><i class="fa-brands fa-facebook-f"></i></li>
+                    </a>
+                    <a href="https://x.com/i/flow/login" target="_blank">
+                        <li><i class="fa-brands fa-twitter"></i></li>
+                    </a>
+                    <a href="https://accounts.google.com/v3/signin/identifier?authuser=0" target="_blank">
+                        <li><i class="fa-brands fa-google"></i></li>
+                    </a>
+                </ul>
+                <p class="signUp">Or Sign Up using</p>
+                <a href="signup.html">
+                    <p id="signUp">Sign UP</p>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('name').value.trim();
+            const password = document.getElementById('password').value;
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+
+
+            document.getElementById('usernameError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
+
+            let isValid = true;
+
+
+            if (!username) {
+                document.getElementById('usernameError').textContent = 'Please fill this field';
+                isValid = false;
+            }
+            if (!password) {
+                document.getElementById('passwordError').textContent = 'Please fill this field';
+                isValid = false;
+            }
+
+
+            if (!isValid) return;
+
+
+            const user = users.find(user => user.firstName === username && user.password === password);
+
+            if (user) {
+                const successMessage = document.createElement('p');
+                successMessage.textContent = 'Login successful';
+                successMessage.classList.add('success-message');
+                document.querySelector('.container').prepend(successMessage);
+                setTimeout(() => {
+                    window.location.href = 'bubble_sort.html';
+                }, 1000);
+            } else {
+                document.getElementById('passwordError').textContent = 'Invalid credentials';
+            }
+        }
+
+
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
+
+    </script>
+</body>
+
+</html>

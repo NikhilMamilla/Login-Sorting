@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Techniques</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="sort-container">
+        <h2 class="t-center">Sorting Techniques</h2>
+        <div class="inputDiv">
+            <label for="array">Enter numbers (space-separated):</label>
+            <input type="text" id="array" placeholder="e.g. 5 3 8 4 2">
+        </div>
+        <div class="formBottom">
+            <button class="btn" id="bubbleSortBtn">Bubble Sort</button>
+            <button class="btn" id="selectionSortBtn">Selection Sort</button>
+            <button class="btn" id="quickSortBtn">Quick Sort</button>
+        </div>
+        <div class="result-container">
+            <h3>Sorted Array:</h3>
+            <p id="result"></p>
+            <p id="description"></p>
+        </div>
+    </div>
+
+    <script>
+        // Bubble sort function
+        function bubbleSort(arr) {
+            for (let i = 0; i < arr.length - 1; i++) {
+                for (let j = 0; j < arr.length - 1 - i; j++) {
+                    if (arr[j] > arr[j + 1]) {
+                        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+                    }
+                }
+            }
+            return arr;
+        }
+
+        // Selection sort function
+        function selectionSort(arr) {
+            for (let i = 0; i < arr.length - 1; i++) {
+                let minIndex = i;
+                for (let j = i + 1; j < arr.length; j++) {
+                    if (arr[j] < arr[minIndex]) {
+                        minIndex = j;
+                    }
+                }
+                [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+            }
+            return arr;
+        }
+
+        // Quick sort function
+        function quickSort(arr) {
+            if (arr.length <= 1) return arr;
+            const pivot = arr[arr.length - 1];
+            const left = [];
+            const right = [];
+            for (let i = 0; i < arr.length - 1; i++) {
+                if (arr[i] < pivot) {
+                    left.push(arr[i]);
+                } else {
+                    right.push(arr[i]);
+                }
+            }
+            return [...quickSort(left), pivot, ...quickSort(right)];
+        }
+
+        document.getElementById('bubbleSortBtn').addEventListener('click', function () {
+            const input = document.getElementById('array').value;
+            const arr = input.split(' ').map(Number);
+            const sortedArray = bubbleSort(arr);
+            document.getElementById('result').textContent = sortedArray.join(' ');
+
+            // description for bubble sort
+            document.getElementById('description').textContent = 'Bubble Sort repeatedly swaps adjacent elements if they are in the wrong order. It has a time complexity of O(n^2).';
+        });
+
+        document.getElementById('selectionSortBtn').addEventListener('click', function () {
+            const input = document.getElementById('array').value;
+            const arr = input.split(' ').map(Number);
+            const sortedArray = selectionSort(arr);
+            document.getElementById('result').textContent = sortedArray.join(' ');
+
+            // description for selection sort
+            document.getElementById('description').textContent = 'Selection Sort divides the array into a sorted and an unsorted part, repeatedly selecting the smallest element from the unsorted part. It has a time complexity of O(n^2).';
+        });
+
+        document.getElementById('quickSortBtn').addEventListener('click', function () {
+            const input = document.getElementById('array').value;
+            const arr = input.split(' ').map(Number);
+            const sortedArray = quickSort(arr);
+            document.getElementById('result').textContent = sortedArray.join(' ');
+
+            // description for quick sort
+            document.getElementById('description').textContent = 'Quick Sort is a divide-and-conquer algorithm that picks a pivot and partitions the array around the pivot. It has an average time complexity of O(n log n).';
+        });
+    </script>
+</body>
+
+</html>
